@@ -1,0 +1,159 @@
+1x1{
+MOVESE: 1x2 , 2x1 ,2x2
+COME: 1x3 , 3x1 , 3x3
+}
+
+1x2{
+MOVESE: 1x1 , 2x2 , 1x3
+COME:  3x2 , 1x4
+}
+
+1x3{
+MOVESE: 1x2 , 1x4 , 2x2, 2x3 ,2x4
+COME: 	1x1 , 3x1 , 3x3 , 3x5 , 1x5
+}
+
+1x4{
+MOVESE: 1x3 , 1x5 , 2x3
+COME:  1x2 , 3x4
+}
+
+1x5{
+MOVESE: 1x4 , 2x4 , 2x5
+COME:   1x3 , 3x3 , 3x5
+}
+
+2x1{
+MOVESE: 1x1 , 2x2 , 3x1
+COME: 2x3 , 4x1
+}
+
+2x2{
+MOVESE: 1x1 , 1x2 , 1x3 , 2x1 , 2x3 , 3x1 , 3x2 , 3x3
+COME:   2x4 , 4x4 , 4x2
+}
+
+2x3{
+MOVESE: 2x2 , 2x4 , 1x3 , 3x3
+COME: 2x1 , 4x3 , 2x5
+}
+
+
+2x4{
+MOVESE: 1x3 , 1x4 , 1x5 , 2x3 , 2x5 , 3x3 , 3x4 , 3x5
+COME:   2x2 , 4x2 , 4x4
+}
+
+
+2x5{
+MOVESE: 1x5 ,2x4 , 3x5
+COME:	3x3 , 4x5
+}
+
+
+3x1{
+MOVESE: 2x1 , 2x2 , 3x2 ,4x1 ,4x2
+COME: 1x1 , 1x3 ,3x3 , 5x3 5x1
+}
+
+3x2{
+MOVESE: 3x1 , 3x3 , 2x2 , 4x2
+COME: 1x2 , 3x4 , 5x2
+}
+
+3x3{
+MOVESE: 2x2 ,2x3 ,2x4 ,3x2 ,3x4 , 4x2 , 4x3 , 4x4
+COME: 1x1 , 1x3 , 1x5 , 3x1 , 3x5 , 5x1 , 5x3 , 5x5
+}
+
+3x4{
+MOVESE: 2x4 , 3x3 , 3x5 ,4x4
+COME:   3x2 , 1x4 , 5x4
+}
+
+3x5{
+MOVESE: 2x4 , 2x5 , 3x4 , 4x4 , 4x5
+COME: 1x3 , 1x5 , 3x3 ,5x3 , 5x5
+}
+
+4x1{
+MOVESE:3x1 , 4x2 , 5x1
+COME: 4x3
+}
+
+4x2{
+MOVESE: 3x1,3x2,3x3,4x1,4x3,5x1,5x2,5x3
+COME:2x2, 2x4 , 4x4 , 6x3
+}
+
+
+4x3{
+MOVESE:3x3 , 4x2 , 4x4 , 5x3
+COME: 4x1 , 4x5 , 6x2
+}
+
+
+4x4{
+MOVESE: 3x3 ,3x4,3x5 , 4x3 ,4x5 , 5x3 ,5x4 5x5
+COME: 2x2 , 2x4 , 4x2 , 6x1
+}
+
+4x5{
+MOVESE: 3x5,4x4,5x5
+COME:2x5 , 4x3
+}
+
+5x1{
+MOVESE: 4x1 , 4x2 , 5x2
+COME:3x1 ,3x3 ,5x3
+}
+
+5x2{
+MOVESE: 5x1,4x2,5x3
+COME: 3x2 , 5x4
+}
+
+5x3{
+MOVESE: 4x2 , 4x3 , 4x4 , 5x2 , 5x4 , 6x1 ,6x2 ,6x3
+COME: 5x1 , 3x1 , 3x3 , 3x5 , 5x5 , 7x1 , 7x2 , 7x3
+}
+
+5x4{
+MOVESE:4x4 , 5x3 , 5x5
+COME: 3x4 , 5x3
+}
+
+5x5{
+MOVESE:4x4 , 4x5 , 5x4
+COME:3x3 ,3x5 ,5x3
+}
+
+6x1{
+MOVESE:5x3 , 6x2 , 7x1
+COME:4x4 , 6x3
+}
+
+6x2{
+MOVESE: 5x3 , 6x1 , 6x3 , 7x2
+COME:4x3
+}
+
+6x3{
+MOVESE: 5x3 , 6x2 , 7x3
+COME:4x2 , 6x1 ,
+}
+
+7x1{
+MOVESE: 6x1 , 7x2
+COME:5x3 , 7x3
+}
+
+7x2{
+MOVESE: 6x2 , 7x1 , 7x3
+COME:5x3
+}
+
+7x3{
+MOVESE:6x3,7x2
+COME:5x3 , 7x1
+}
