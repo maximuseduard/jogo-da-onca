@@ -180,6 +180,9 @@
         casa_atual = $(this).attr('id');
         $(this).addClass("cachorro");
         turno = "onca";
+        console.log("----------------------------------------------------------");
+        console.log("---------------------- FIM DA JOGADA ---------------------");
+        console.log("----------------------------------------------------------");
         return;
 
       } else if(turno == "onca") {
@@ -189,10 +192,12 @@
           $( "#"+$(this).attr("data-comida") ).html("");
           $( "#"+$(this).attr("data-comida") ).addClass("livre");
           $( "#"+$(this).attr("data-comida") ).removeClass("cachorro");
+          $("span").removeClass("comida");
           if(cachorros == 5) vencedor("onca");
           casa_atual = $(this).attr('id');
           marcarCasasOnca();
         }
+
         casa_atual = $(this).attr('id');
         $(this).addClass("onca");
         $(this).addClass("selecionado");
@@ -201,10 +206,16 @@
         console.log("----- Existe opções? -----");
         console.log( $("span").hasClass("jogavel") );
         console.log("--------------------------");
+
         if( !$("span").hasClass("jogavel") ) {
           turno = "cachorro";
+          $("span").removeClass("comida");
           $(this).removeClass("selecionado");
+          console.log("----------------------------------------------------------");
+          console.log("---------------------- FIM DA JOGADA ---------------------");
+          console.log("----------------------------------------------------------");
           return;
+
         } else {
           // habilitar botão para finalizar turno da onça manualmente
         }
@@ -247,6 +258,15 @@
         $("#"+casas_possiveis[i].split(":")[0]).attr("data-comida", casas_possiveis[i].split(":")[1]); // posição do cachorro a ser comido
       }
     }
+  }
+  function finalizaJogada() {
+    turno = "cachorro";
+    $("span").removeClass("jogavel");
+    $("span").removeClass("comida");
+    $(this).removeClass("selecionado");
+    console.log("----------------------------------------------------------");
+    console.log("---------------------- FIM DA JOGADA ---------------------");
+    console.log("----------------------------------------------------------");
   }
   function vencedor(animal) {
     if(animal == "onca") alert("A ONÇA ganhou!\nReinicie a página para jogar novamente");
