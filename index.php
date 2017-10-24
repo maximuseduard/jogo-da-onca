@@ -60,6 +60,7 @@
   <script src="js/jquery-3.2.1.min.js" charset="utf-8"></script>
 
   <script type="text/javascript">
+  var i=0;
   var turno = "onca";
   var cachorros = 0;
   var casa_atual = "x33";
@@ -67,7 +68,7 @@
     x11: ['x12','x21','x22'],
     x12: ['x11','x22','x13'],
     x13: ['x12','x14','x22','x23','x24'],
-    x14: ['x13','x15','x23'],
+    x14: ['x13','x15','x24'],
     x15: ['x14','x24','x25'],
     x21: ['x11','x22','x31'],
     x22: ['x11','x12','x13','x21','x23','x31','x32','x33'],
@@ -82,7 +83,7 @@
     x41: ['x31','x42','x51'],
     x42: ['x31','x32','x33','x41','x43','x51','x52','x53'],
     x43: ['x33','x42','x44','x53'],
-    x44: ['x33','x34','x35','x43','x45','x53','x54 x55'],
+    x44: ['x33','x34','x35','x43','x45','x53','x54','x55'],
     x45: ['x35','x44','x55'],
     x51: ['x41','x42','x52'],
     x52: ['x51','x42','x53'],
@@ -96,7 +97,8 @@
     x72: ['x62','x71','x73'],
     x73: ['x63','x72']
   }
-  var movimentos_onca = { // '{casa_destino}:{casa_cachorro}'
+  // '{casa_destino}:{casa_cachorro}'
+  var movimentos_onca = {
     x11: ['x13:x12','x31:x21','x33:x22'],
     x12: ['x32:x22','x14:x13'],
     x13: ['x11:x12','x31:x22','x33:x23','x35:x24','x15:x14'],
@@ -114,7 +116,7 @@
     x35: ['x13:x24','x15:x25','x33:x34','x53:x44','x55:x45'],
     x41: ['x43:x42'],
     x42: ['x22:x32','x24x:33','x44:x43','x63:x53'],
-    x43: ['x41:x42','x45:x44','x62:x53'],
+    x43: ['x23:x33','x41:x42','x45:x44','x62:x53'],
     x44: ['x22:x33','x24:x34','x42:x43','x61:x53'],
     x45: ['x25:x35','x43:x44'],
     x51: ['x31:x41','x33:x42','x53:x52'],
@@ -130,9 +132,131 @@
     x73: ['x53:x63','x71:x72']
   }
 
+  $("span").click(function() {
+    if( !$(this).hasClass("jogavel") ) {
+      console.clear();
+      console.log("----------------------------------------------------------");
+      console.log("-------------------- INICIO DA JOGADA --------------------");
+      console.log("----------------------------------------------------------");
+      console.log("######## Placar ########");
+      console.log(cachorros);
+      console.log("########################");
+      casa_atual = $(this).attr('id');
+      console.log("----- Casa Atual -----");
+      console.log(casa_atual);
+      console.log("----------------------");
+      console.log("------- Turno -------");
+      console.log(turno);
+      console.log("---------------------");
+      if( $(this).hasClass("livre") ) {
+        return;
+      } else if($(this).hasClass("onca") && turno == "onca") {
+        marcarCasas();
+        marcarCasasOnca();
+        $(this).addClass("selecionado");
+        if( !$("span").hasClass("jogavel") ) vencedor("cachorro");
+      } else if($(this).hasClass("cachorro") && turno == "cachorro") {
+        marcarCasas();
+        $(this).addClass("selecionado");
+      } else {
+        $("span").removeClass("selecionado");
+        $("span").removeClass("jogavel");
+      }
+    } else {
+      // configurações padrão da casa clicada ( ocupar a casa / colocar a imagem / remover imagem e classes da ultima )
+
+      // ocupando a casa atual e colocando imagem nela
+      $(this).removeClass("livre");
+      $(this).html( $("#"+casa_atual).html() );
+
+      // removendo classes e imagens da ultima jogada
+      $("#"+casa_atual).html("");
+      $("#"+casa_atual).addClass("livre");
+      $("#"+casa_atual).removeClass(turno);
+      $("span").removeClass("jogavel");
+      $("span").removeClass("selecionado");
+
+      if(turno == "cachorro") {
+        casa_atual = $(this).attr('id');
+        $(this).addClass("cachorro");
+        turno = "onca";
+        return;
+
+      } else if(turno == "onca") {
+        // caso tenha comido uma peça ( adiciona no contador / limpa classe e imagem do cachorro / checa vencedor )
+        if( $(this).hasClass("comida") ) {
+          cachorros++;
+          $( "#"+$(this).attr("data-comida") ).html("");
+          $( "#"+$(this).attr("data-comida") ).addClass("livre");
+          $( "#"+$(this).attr("data-comida") ).removeClass("cachorro");
+          if(cachorros == 5) vencedor("onca");
+          casa_atual = $(this).attr('id');
+          marcarCasasOnca();
+        }
+        casa_atual = $(this).attr('id');
+        $(this).addClass("onca");
+        $(this).addClass("selecionado");
+
+        // Se existir opções o usuário tem q cancelar a jogada manualmente, ou comer mais cachorros. Se não passa o turno automaticamente
+        console.log("----- Existe opções? -----");
+        console.log( $("span").hasClass("jogavel") );
+        console.log("--------------------------");
+        if( !$("span").hasClass("jogavel") ) {
+          turno = "cachorro";
+          $(this).removeClass("selecionado");
+          return;
+        } else {
+          // habilitar botão para finalizar turno da onça manualmente
+        }
+      }
+    }
+  });
+
+  function marcarCasas() {
+    // limpa as casas da ultima jogada
+    $("span").removeClass("selecionado");
+    $("span").removeClass("jogavel");
+
+    // busca dados do objeto de movimentos
+    var casas_possiveis = movimentos[casa_atual];
+    console.log("--- Casas Possiveis ---");
+    console.log(casas_possiveis.length+" casas");
+    console.log(casas_possiveis);
+    console.log("-----------------------");
+
+    // adiciona classe nos lugares disponiveis
+    for(i=0; i < casas_possiveis.length; i++) {
+      if( $("#"+casas_possiveis[i]).hasClass("livre") ) {
+        $("#"+casas_possiveis[i]).addClass("jogavel");
+      }
+    }
+  }
+  function marcarCasasOnca() {
+    // busca dados do objeto de movimentos da onça
+    var casas_possiveis = movimentos_onca[casa_atual];
+    console.log("----- Casas Onça -----");
+    console.log(casas_possiveis.length+" casas");
+    console.log(casas_possiveis);
+    console.log("----------------------");
+
+    // adiciona classe nos lugares disponiveis, adicionando tambem o atributo que define qual cachorrro foi comido caso a posição seja usada
+    for(i=0; i < casas_possiveis.length; i++) {
+      if( $("#"+casas_possiveis[i].split(":")[0]).hasClass("livre") && $("#"+casas_possiveis[i].split(":")[1]).hasClass("cachorro") ) {
+        $("#"+casas_possiveis[i].split(":")[0]).addClass("jogavel");
+        $("#"+casas_possiveis[i].split(":")[0]).addClass("comida"); // indica que é uma casa de 'ataque'
+        $("#"+casas_possiveis[i].split(":")[0]).attr("data-comida", casas_possiveis[i].split(":")[1]); // posição do cachorro a ser comido
+      }
+    }
+  }
   function vencedor(animal) {
-    if(animal == "onca") alert("A ONÇA ganhou!");
-    else alert("OS CACHORROS ganharam!");
+    if(animal == "onca") alert("A ONÇA ganhou!\nReinicie a página para jogar novamente");
+    else alert("OS CACHORROS ganharam!\nReinicie a página para jogar novamente");
+    $("span").removeClass("onca");
+    $("span").removeClass("cachorro");
+    $("span").removeClass("livre");
+    $("span").removeClass("jogavel");
+    $("span").removeClass("selecionado");
+    $("span").removeClass("comida");
   }
   </script>
 </body>
