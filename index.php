@@ -57,6 +57,8 @@
   <span id="x72" class="livre"></span>
   <span id="x73" class="livre"></span>
 
+  <button type="button" name="button" class="disabled" disabled onclick="finalizaJogada()">Pular</button>
+
   <script src="js/jquery-3.2.1.min.js" charset="utf-8"></script>
 
   <script type="text/javascript">
@@ -133,7 +135,9 @@
   }
 
   $("span").click(function() {
-    if( !$(this).hasClass("jogavel") ) {
+    $("button").addClass("disabled");
+    $("button").attr("disabled", true);
+    if( !$(this).hasClass("jogavel") && !$(this).hasClass("ataque") ) {
       console.clear();
       console.log("----------------------------------------------------------");
       console.log("-------------------- INICIO DA JOGADA --------------------");
@@ -162,7 +166,7 @@
         $("span").removeClass("selecionado");
         $("span").removeClass("jogavel");
       }
-    } else {
+    } else if( $(this).hasClass("jogavel") && !$(this).hasClass("ataque") ) {
       // configurações padrão da casa clicada ( ocupar a casa / colocar a imagem / remover imagem e classes da ultima )
 
       // ocupando a casa atual e colocando imagem nela
@@ -189,13 +193,14 @@
         // caso tenha comido uma peça ( adiciona no contador / limpa classe e imagem do cachorro / checa vencedor )
         if( $(this).hasClass("comida") ) {
           cachorros++;
-          $( "#"+$(this).attr("data-comida") ).html("");
-          $( "#"+$(this).attr("data-comida") ).addClass("livre");
-          $( "#"+$(this).attr("data-comida") ).removeClass("cachorro");
+          $("#"+$(this).attr("data-comida") ).html("");
+          $("#"+$(this).attr("data-comida") ).addClass("livre");
+          $("#"+$(this).attr("data-comida") ).removeClass("cachorro");
           $("span").removeClass("comida");
           if(cachorros == 5) vencedor("onca");
           casa_atual = $(this).attr('id');
           marcarCasasOnca();
+          $("#"+casa_atual).addClass("ataque");
         }
 
         casa_atual = $(this).attr('id');
@@ -209,6 +214,7 @@
 
         if( !$("span").hasClass("jogavel") ) {
           turno = "cachorro";
+          $("span").removeClass("ataque");
           $("span").removeClass("comida");
           $(this).removeClass("selecionado");
           console.log("----------------------------------------------------------");
@@ -218,7 +224,32 @@
 
         } else {
           // habilitar botão para finalizar turno da onça manualmente
+            $("button").removeClass("disabled");
+            $("button").prop("disabled", false);
         }
+      }
+    } else if( $("span").hasClass("ataque") ) {
+      casa_atual = $("span.ataque").attr('id');
+      $("span.ataque").addClass("selecionado");
+      // Se existir opções o usuário tem q cancelar a jogada manualmente, ou comer mais cachorros. Se não passa o turno automaticamente
+      marcarCasasOnca();
+      console.log("----- Existe opções? -----");
+      console.log( $("span").hasClass("jogavel") );
+      console.log("--------------------------");
+      if( !$("span").hasClass("jogavel") ) {
+        turno = "cachorro";
+        $("span").removeClass("ataque");
+        $("span").removeClass("comida");
+        $(this).removeClass("selecionado");
+        console.log("----------------------------------------------------------");
+        console.log("---------------------- FIM DA JOGADA ---------------------");
+        console.log("----------------------------------------------------------");
+        return;
+
+      } else {
+        // habilitar botão para finalizar turno da onça manualmente
+          $("button").removeClass("disabled");
+          $("button").prop("disabled", false);
       }
     }
   });
@@ -260,10 +291,15 @@
     }
   }
   function finalizaJogada() {
-    turno = "cachorro";
+    $("button").addClass("disabled");
+    $("button").attr("disabled", true);
+
+    $("span").removeClass("ataque");
+    $("span").removeClass("selecionado");
     $("span").removeClass("jogavel");
     $("span").removeClass("comida");
-    $(this).removeClass("selecionado");
+
+    turno = "cachorro";
     console.log("----------------------------------------------------------");
     console.log("---------------------- FIM DA JOGADA ---------------------");
     console.log("----------------------------------------------------------");
@@ -277,6 +313,7 @@
     $("span").removeClass("jogavel");
     $("span").removeClass("selecionado");
     $("span").removeClass("comida");
+    $("span").removeClass("ataque");
   }
   </script>
 </body>
