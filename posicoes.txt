@@ -1,159 +1,159 @@
 x11{
-MOVESE: 'x12','x21','x22
-COME: 'x13','x31','x33
+MOVESE: 'x12','x21','x22'
+COME: 'x13','x31','x33'
 }
 
 x12{
-MOVESE: 'x11','x22','x13
-COME: 'x32','x14
+MOVESE: 'x11','x22','x13'
+COME: 'x32','x14'
 }
 
 x13{
-MOVESE: 'x12','x14','x22','x23','x24
-COME: 'x11','x31','x33','x35','x15
+MOVESE: 'x12','x14','x22','x23','x24'
+COME: 'x11','x31','x33','x35','x15'
 }
 
 x14{
-MOVESE: 'x13','x15','x23
-COME: 'x12','x34
+MOVESE: 'x13','x15','x23'
+COME: 'x12','x34'
 }
 
 x15{
-MOVESE: 'x14','x24','x25
-COME: 'x13','x33','x35
+MOVESE: 'x14','x24','x25'
+COME: 'x13','x33','x35'
 }
 
 x21{
-MOVESE: 'x11','x22','x31
-COME: 'x23','x41
+MOVESE: 'x11','x22','x31'
+COME: 'x23','x41'
 }
 
 x22{
-MOVESE: 'x11','x12','x13','x21','x23','x31','x32','x33
-COME: 'x24','x44','x42
+MOVESE: 'x11','x12','x13','x21','x23','x31','x32','x33'
+COME: 'x24','x44','x42'
 }
 
 x23{
-MOVESE: 'x22','x24','x13','x33
-COME: 'x21','x43','x25
+MOVESE: 'x22','x24','x13','x33'
+COME: 'x21','x43','x25'
 }
 
 
 x24{
-MOVESE: 'x13','x14','x15','x23','x25','x33','x34','x35
-COME: 'x22','x42','x44
+MOVESE: 'x13','x14','x15','x23','x25','x33','x34','x35'
+COME: 'x22','x42','x44'
 }
 
 
 x25{
-MOVESE: 'x15','x24','x35
-COME: 'x33','x45
+MOVESE: 'x15','x24','x35'
+COME: 'x33','x45'
 }
 
 
 x31{
-MOVESE: 'x21','x22','x32','x41','x42
-COME: 'x11','x13','x33','x53 x51
+MOVESE: 'x21','x22','x32','x41','x42'
+COME: 'x11','x13','x33','x53 x51'
 }
 
 x32{
-MOVESE: 'x31','x33','x22','x42
-COME: 'x12','x34','x52
+MOVESE: 'x31','x33','x22','x42'
+COME: 'x12','x34','x52'
 }
 
 x33{
-MOVESE: 'x22','x23','x24','x32','x34','x42','x43','x44
-COME: 'x11','x13','x15','x31','x35','x51','x53','x55
+MOVESE: 'x22','x23','x24','x32','x34','x42','x43','x44'
+COME: 'x11','x13','x15','x31','x35','x51','x53','x55'
 }
 
 x34{
-MOVESE: 'x24','x33','x35','x44
-COME: 'x32','x14','x54
+MOVESE: 'x24','x33','x35','x44'
+COME: 'x32','x14','x54'
 }
 
 x35{
-MOVESE: 'x24','x25','x34','x44','x45
-COME: 'x13','x15','x33','x53','x55
+MOVESE: 'x24','x25','x34','x44','x45'
+COME: 'x13','x15','x33','x53','x55'
 }
 
 x41{
-MOVESE:x31','x42','x51
-COME: 'x43
+MOVESE: 'x31','x42','x51'
+COME: 'x43'
 }
 
 x42{
-MOVESE: 'x31','x32','x33','x41','x43','x51','x52','x53
-COME: 'x22','x24','x44','x63
+MOVESE: 'x31','x32','x33','x41','x43','x51','x52','x53'
+COME: 'x22','x24','x44','x63'
 }
 
 
 x43{
-MOVESE:x33','x42','x44','x53
-COME: 'x41','x45','x62
+MOVESE: 'x33','x42','x44','x53'
+COME: 'x41','x45','x62'
 }
 
 
 x44{
-MOVESE: 'x33','x34','x35','x43','x45','x53','x54 x55
-COME: 'x22','x24','x42','x61
+MOVESE: 'x33','x34','x35','x43','x45','x53','x54 x55'
+COME: 'x22','x24','x42','x61'
 }
 
 x45{
-MOVESE: 'x35','x44','x55
-COME: 'x25','x43
+MOVESE: 'x35','x44','x55'
+COME: 'x25','x43'
 }
 
 x51{
-MOVESE: 'x41','x42','x52
-COME: 'x31','x33','x53
+MOVESE: 'x41','x42','x52'
+COME: 'x31','x33','x53'
 }
 
 x52{
-MOVESE: 'x51','x42','x53
-COME: 'x32','x54
+MOVESE: 'x51','x42','x53'
+COME: 'x32','x54'
 }
 
 x53{
-MOVESE: 'x42','x43','x44','x52','x54','x61','x62','x63
-COME: 'x51','x31','x33','x35','x55','x71','x72','x73
+MOVESE: 'x42','x43','x44','x52','x54','x61','x62','x63'
+COME: 'x51','x31','x33','x35','x55','x71','x72','x73'
 }
 
 x54{
-MOVESE:x44','x53','x55
-COME: 'x34','x53
+MOVESE: 'x44','x53','x55'
+COME: 'x34','x53'
 }
 
 x55{
-MOVESE:x44','x45','x54
-COME: 'x33','x35','x53
+MOVESE: 'x44','x45','x54'
+COME: 'x33','x35','x53'
 }
 
 x61{
-MOVESE:x53','x62','x71
-COME: 'x44','x63
+MOVESE: 'x53','x62','x71'
+COME: 'x44','x63'
 }
 
 x62{
-MOVESE: 'x53','x61','x63','x72
-COME: 'x43
+MOVESE: 'x53','x61','x63','x72'
+COME: 'x43'
 }
 
 x63{
-MOVESE: 'x53','x62','x73
-COME: 'x42','x61','
+MOVESE: 'x53','x62','x73'
+COME: 'x42','x61'
 }
 
 x71{
-MOVESE: 'x61','x72
-COME: 'x53','x73
+MOVESE: 'x61','x72'
+COME: 'x53','x73'
 }
 
 x72{
-MOVESE: 'x62','x71','x73
-COME: 'x53
+MOVESE: 'x62','x71','x73'
+COME: 'x53'
 }
 
 x73{
-MOVESE:x63','x72
-COME: 'x53','x71
+MOVESE: 'x63','x72'
+COME: 'x53','x71'
 }
