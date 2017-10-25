@@ -65,8 +65,6 @@
     Turno: ONÇA
   </div>
 
-  <button type="button" name="button" class="disabled" disabled onclick="finalizaJogada()">Pular</button>
-
   <script src="js/jquery-3.2.1.min.js" charset="utf-8"></script>
 
   <script type="text/javascript">
@@ -143,9 +141,9 @@
   }
 
   $("span").click(function() {
-    $("button").addClass("disabled");
-    $("button").attr("disabled", true);
-    if( !$(this).hasClass("jogavel") && !$(this).hasClass("ataque") ) {
+    if( !$(this).hasClass("jogavel") && turno == "cachorro") {
+      casa_atual = $(this).attr('id');
+
       console.clear();
       console.log("----------------------------------------------------------");
       console.log("-------------------- INICIO DA JOGADA --------------------");
@@ -153,116 +151,43 @@
       console.log("######## Placar ########");
       console.log(cachorros);
       console.log("########################");
-      casa_atual = $(this).attr('id');
       console.log("----- Casa Atual -----");
       console.log(casa_atual);
       console.log("----------------------");
       console.log("------- Turno -------");
       console.log(turno);
       console.log("---------------------");
+
       if( $(this).hasClass("livre") ) {
         return;
-      } else if($(this).hasClass("onca") && turno == "onca") {
-        marcarCasas();
-        marcarCasasOnca();
-        $(this).addClass("selecionado");
-        if( !$("span").hasClass("jogavel") ) vencedor("cachorro");
-      } else if($(this).hasClass("cachorro") && turno == "cachorro") {
+      } else if( $(this).hasClass("cachorro") ) {
         marcarCasas();
         $(this).addClass("selecionado");
       } else {
         $("span").removeClass("selecionado");
         $("span").removeClass("jogavel");
       }
-    } else if( $(this).hasClass("jogavel") && !$(this).hasClass("ataque") ) {
+    } else if( $(this).hasClass("jogavel") && turno == "cachorro") {
       // configurações padrão da casa clicada ( ocupar a casa / colocar a imagem / remover imagem e classes da ultima )
 
       // ocupando a casa atual e colocando imagem nela
       $(this).removeClass("livre");
-      $(this).html( $("#"+casa_atual).html() );
+      $(this).addClass("cachorro");
+      $(this).html('<img src="images/cachorro.png">');
 
       // removendo classes e imagens da ultima jogada
       $("#"+casa_atual).html("");
       $("#"+casa_atual).addClass("livre");
-      $("#"+casa_atual).removeClass(turno);
+      $("#"+casa_atual).removeClass("cachorro");
       $("span").removeClass("jogavel");
       $("span").removeClass("selecionado");
 
-      if(turno == "cachorro") {
-        casa_atual = $(this).attr('id');
-        $(this).addClass("cachorro");
-        $("#turno").html("Turno: ONÇA");
-        turno = "onca";
-        console.log("----------------------------------------------------------");
-        console.log("---------------------- FIM DA JOGADA ---------------------");
-        console.log("----------------------------------------------------------");
-        return;
-
-      } else if(turno == "onca") {
-        // caso tenha comido uma peça ( adiciona no contador / limpa classe e imagem do cachorro / checa vencedor )
-        if( $(this).hasClass("comida") ) {
-          cachorros++;
-          $("#placar").append('<img src="images/cachorro.png">')
-          $("#"+$(this).attr("data-comida") ).html("");
-          $("#"+$(this).attr("data-comida") ).addClass("livre");
-          $("#"+$(this).attr("data-comida") ).removeClass("cachorro");
-          $("span").removeClass("comida");
-          if(cachorros == 5) vencedor("onca");
-          casa_atual = $(this).attr('id');
-          marcarCasasOnca();
-          $("#"+casa_atual).addClass("ataque");
-        }
-
-        casa_atual = $(this).attr('id');
-        $(this).addClass("onca");
-        $(this).addClass("selecionado");
-
-        // Se existir opções o usuário tem q cancelar a jogada manualmente, ou comer mais cachorros. Se não passa o turno automaticamente
-        console.log("----- Existe opções? -----");
-        console.log( $("span").hasClass("jogavel") );
-        console.log("--------------------------");
-
-        if( !$("span").hasClass("jogavel") ) {
-          turno = "cachorro";
-          $("#turno").html("Turno: CACHORRO");
-          $("span").removeClass("ataque");
-          $("span").removeClass("comida");
-          $(this).removeClass("selecionado");
-          console.log("----------------------------------------------------------");
-          console.log("---------------------- FIM DA JOGADA ---------------------");
-          console.log("----------------------------------------------------------");
-          return;
-
-        } else {
-          // habilitar botão para finalizar turno da onça manualmente
-          $("button").removeClass("disabled");
-          $("button").prop("disabled", false);
-        }
-      }
-    } else if( $("span").hasClass("ataque") ) {
-      casa_atual = $("span.ataque").attr('id');
-      $("span.ataque").addClass("selecionado");
-      // Se existir opções o usuário tem q cancelar a jogada manualmente, ou comer mais cachorros. Se não passa o turno automaticamente
-      marcarCasasOnca();
-      console.log("----- Existe opções? -----");
-      console.log( $("span").hasClass("jogavel") );
-      console.log("--------------------------");
-      if( !$("span").hasClass("jogavel") ) {
-        turno = "cachorro";
-        $("#turno").html("Turno: CACHORRO");
-        $("span").removeClass("ataque");
-        $("span").removeClass("comida");
-        $(this).removeClass("selecionado");
-        console.log("----------------------------------------------------------");
-        console.log("---------------------- FIM DA JOGADA ---------------------");
-        console.log("----------------------------------------------------------");
-        return;
-
-      } else {
-        // habilitar botão para finalizar turno da onça manualmente
-        $("button").removeClass("disabled");
-        $("button").prop("disabled", false);
-      }
+      $("#turno").html("Turno: ONÇA");
+      turno = "onca";
+      console.log("-----------------------------------------------------------");
+      console.log("------------------ FIM DA JOGADA CACHORRO -----------------");
+      console.log("-----------------------------------------------------------");
+      return;
     }
   });
 
@@ -284,38 +209,6 @@
         $("#"+casas_possiveis[i]).addClass("jogavel");
       }
     }
-  }
-  function marcarCasasOnca() {
-    // busca dados do objeto de movimentos da onça
-    var casas_possiveis = movimentos_onca[casa_atual];
-    console.log("----- Casas Onça -----");
-    console.log(casas_possiveis.length+" casas");
-    console.log(casas_possiveis);
-    console.log("----------------------");
-
-    // adiciona classe nos lugares disponiveis, adicionando tambem o atributo que define qual cachorrro foi comido caso a posição seja usada
-    for(i=0; i < casas_possiveis.length; i++) {
-      if( $("#"+casas_possiveis[i].split(":")[0]).hasClass("livre") && $("#"+casas_possiveis[i].split(":")[1]).hasClass("cachorro") ) {
-        $("#"+casas_possiveis[i].split(":")[0]).addClass("jogavel");
-        $("#"+casas_possiveis[i].split(":")[0]).addClass("comida"); // indica que é uma casa de 'ataque'
-        $("#"+casas_possiveis[i].split(":")[0]).attr("data-comida", casas_possiveis[i].split(":")[1]); // posição do cachorro a ser comido
-      }
-    }
-  }
-  function finalizaJogada() {
-    $("button").addClass("disabled");
-    $("button").attr("disabled", true);
-
-    $("span").removeClass("ataque");
-    $("span").removeClass("selecionado");
-    $("span").removeClass("jogavel");
-    $("span").removeClass("comida");
-
-    turno = "cachorro";
-    $("#turno").html("Turno: CACHORRO");
-    console.log("----------------------------------------------------------");
-    console.log("---------------------- FIM DA JOGADA ---------------------");
-    console.log("----------------------------------------------------------");
   }
   function vencedor(animal) {
     if(animal == "onca") alert("A ONÇA ganhou!\nReinicie a página para jogar novamente");

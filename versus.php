@@ -146,6 +146,8 @@
     $("button").addClass("disabled");
     $("button").attr("disabled", true);
     if( !$(this).hasClass("jogavel") && !$(this).hasClass("ataque") ) {
+      casa_atual = $(this).attr('id');
+
       console.clear();
       console.log("----------------------------------------------------------");
       console.log("-------------------- INICIO DA JOGADA --------------------");
@@ -153,7 +155,6 @@
       console.log("######## Placar ########");
       console.log(cachorros);
       console.log("########################");
-      casa_atual = $(this).attr('id');
       console.log("----- Casa Atual -----");
       console.log(casa_atual);
       console.log("----------------------");
