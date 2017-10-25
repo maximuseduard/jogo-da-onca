@@ -1,0 +1,45 @@
+button.versus {
+  position:absolute;
+  left: 200px;
+  top: 300px;
+  background-color: rgb(236, 173, 33);
+  border: none;
+  color: black;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 24px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+button.computer {
+  position:absolute;
+  left: 400px;
+  top: 300px;
+  background-color: black;
+  border: none;
+  color: rgb(236, 173, 33);
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 24px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.titulo {
+  position:absolute;
+  left: 225px;
+  top: 200px;
+  font-size: 40px;
+}
+.jogo {
+  position:absolute;
+  left: 195px;
+  top: 100px;
+  font-size: 50px;
+}
+.cor-onca {
+  color: rgb(236, 173, 33);
+}
