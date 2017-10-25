@@ -17,7 +17,7 @@
   <span class="titulo">MODO DE JOGO</span>
 
   <button type="button" class="versus" name="button" onclick="location.href='versus.php';">1 vs 1</button>
-  <button type="button" class="computer" name="button" onclick="location.href='computer.php';">1 vs PC</button>
+  <button type="button" class="computer" name="button" onclick="location.href='computer.php';">1 vs CPU</button>
 
 </body>
 </html>
