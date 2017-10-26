@@ -167,7 +167,6 @@
         marcarCasas();
         marcarCasasOnca();
         $(this).addClass("selecionado");
-        if( !$("span").hasClass("jogavel") ) vencedor("cachorro");
       } else if($(this).hasClass("cachorro") && turno == "cachorro") {
         marcarCasas();
         $(this).addClass("selecionado");
@@ -190,6 +189,8 @@
       $("span").removeClass("selecionado");
 
       if(turno == "cachorro") {
+        testeVencedor();
+
         casa_atual = $(this).attr('id');
         $(this).addClass("cachorro");
         $("#turno").html("Turno: ONÇA");
@@ -328,6 +329,18 @@
     $("span").removeClass("selecionado");
     $("span").removeClass("comida");
     $("span").removeClass("ataque");
+  }
+  function testeVencedor() {
+    // busca dados do objeto de movimentos
+    var casas_possiveis = movimentos[ $("span.onca").attr("id") ];
+    var cachorroVence = 1;
+    // adiciona classe nos lugares disponiveis
+    for(i=0; i < casas_possiveis.length && cachorroVence == 1; i++) {
+      if( $("#"+casas_possiveis[i]).hasClass("livre") ) {
+        cachorroVence = 0;
+      }
+    }
+    if( cachorroVence==1 ) vencedor("cachorro");
   }
   </script>
 </body>
