@@ -189,12 +189,12 @@
       $("span").removeClass("selecionado");
 
       if(turno == "cachorro") {
-        testeVencedor();
 
         casa_atual = $(this).attr('id');
         $(this).addClass("cachorro");
         $("#turno").html("Turno: ONÇA");
         turno = "onca";
+        testeVencedor();
         console.log("----------------------------------------------------------");
         console.log("---------------------- FIM DA JOGADA ---------------------");
         console.log("----------------------------------------------------------");
@@ -320,8 +320,6 @@
     console.log("----------------------------------------------------------");
   }
   function vencedor(animal) {
-    if(animal == "onca") alert("A ONÇA ganhou!\nReinicie a página para jogar novamente");
-    else alert("OS CACHORROS ganharam!\nReinicie a página para jogar novamente");
     $("span").removeClass("onca");
     $("span").removeClass("cachorro");
     $("span").removeClass("livre");
@@ -329,6 +327,9 @@
     $("span").removeClass("selecionado");
     $("span").removeClass("comida");
     $("span").removeClass("ataque");
+
+    if(animal == "onca") setTimeout(function(){ alert("A ONÇA ganhou!\nReinicie a página para jogar novamente"); }, 0);
+    else setTimeout(function(){ alert("OS CACHORROS ganharam!\nReinicie a página para jogar novamente"); }, 0);
   }
   function testeVencedor() {
     // busca dados do objeto de movimentos
