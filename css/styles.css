@@ -63,11 +63,11 @@ button {
 #############################################################################*/
 .selecionado {
   border: 3px solid red;
-  border-radius: 30px;
+  border-radius: 50%;
 }
 .jogavel {
   border: 3px solid darkblue;
-  border-radius: 30px;
+  border-radius: 50%;
 }
 
 /*#############################################################################
