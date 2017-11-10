@@ -152,12 +152,10 @@
       console.log("----------------------------------------------------------");
       console.log("-------------------- INICIO DA JOGADA --------------------");
       console.log("----------------------------------------------------------");
-      console.log("######## Placar ########");
+      console.log("------- Placar -------");
       console.log(cachorros);
-      console.log("########################");
       console.log("----- Casa Atual -----");
       console.log(casa_atual);
-      console.log("----------------------");
       console.log("------- Turno -------");
       console.log(turno);
       console.log("---------------------");

@@ -148,12 +148,10 @@
       console.log("----------------------------------------------------------");
       console.log("-------------------- INICIO DA JOGADA --------------------");
       console.log("----------------------------------------------------------");
-      console.log("######## Placar ########");
+      console.log("------- Placar -------");
       console.log(cachorros);
-      console.log("########################");
       console.log("----- Casa Atual -----");
       console.log(casa_atual);
-      console.log("----------------------");
       console.log("------- Turno -------");
       console.log(turno);
       console.log("---------------------");
@@ -185,6 +183,7 @@
       $("#turno").html("Turno: ONÇA");
       turno = "onca";
       testeVencedor();
+      turnoOnca();
       console.log("-----------------------------------------------------------");
       console.log("------------------ FIM DA JOGADA CACHORRO -----------------");
       console.log("-----------------------------------------------------------");
@@ -234,6 +233,22 @@
       }
     }
     if( cachorroVence==1 ) vencedor("cachorro");
+  }
+
+  var casas_nv1 = [];
+  var casas_nv2 = [];
+  var casas_nv3 = [];
+  var casas_nv4 = [];
+  var casas_nv5 = [];
+  // INTELIGENCIA ARTIFICIAL
+  function turnoOnca() {
+    casas_nv1 = movimentos[ $("span.onca").attr("id") ];
+
+    for(i=0; i < casas_nv1.length; i++) {
+      if( $("#"+casas_nv1[i]).hasClass("livre") ) {
+        
+      }
+    }
   }
   </script>
 </body>
