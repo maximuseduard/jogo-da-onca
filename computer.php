@@ -11,7 +11,12 @@
   <link rel="stylesheet" type="text/css" href="css/styles.css">
 </head>
 <body>
-  <div id="tab">
+  <!-- <div id="computer" style="display:none"> -->
+  <div id="computer">
+
+  </div>
+
+  <div id="tab" style="display:none">
     <span id="x11" class="cachorro"><img src="images/cachorro.png"></span>
     <span id="x12" class="cachorro"><img src="images/cachorro.png"></span>
     <span id="x13" class="cachorro"><img src="images/cachorro.png"></span>
@@ -140,6 +145,10 @@
     x73: ['x53:x63','x71:x72']
   }
 
+
+  /*##########################################################################
+  #                                  JOGADOR
+  ##########################################################################*/
   $("span").click(function() {
     if( !$(this).hasClass("jogavel") && turno == "cachorro") {
       casa_atual = $(this).attr('id');
@@ -190,7 +199,6 @@
       return;
     }
   });
-
   function marcarCasas() {
     // limpa as casas da ultima jogada
     $("span").removeClass("selecionado");
@@ -210,6 +218,10 @@
       }
     }
   }
+
+  /*##########################################################################
+  #                            TRATAMENTO DE VITÓRIA
+  ##########################################################################*/
   function vencedor(animal) {
     $("span").removeClass("onca");
     $("span").removeClass("cachorro");
@@ -235,21 +247,169 @@
     if( cachorroVence==1 ) vencedor("cachorro");
   }
 
-  var casas_nv1 = [];
-  var casas_nv2 = [];
-  var casas_nv3 = [];
-  var casas_nv4 = [];
-  var casas_nv5 = [];
-  // INTELIGENCIA ARTIFICIAL
-  function turnoOnca() {
-    casas_nv1 = movimentos[ $("span.onca").attr("id") ];
+  /*##########################################################################
+  #                          INTELIGENCIA ARTIFICIAL
+  ##########################################################################*/
+  /*
+  Função recursiva tem que:
+  - Receber estado atual da jogada e risco;
+  - testar a melhor jogada(testar 2 passos após a raiz);
+  - retornar a melhor jogada e risco;
+  Lógica de risco:
+  - O menor risco é o melhor;
+  - O risco é cumulativo nos passos;
+  - Não será avaliado o risco q a jogada do cahorro causa
+  */
+  var melhor_movimento = [];
+  var profundidade = 1;
+  var jogada_global = "";
+  var risco_global = "";
 
-    for(i=0; i < casas_nv1.length; i++) {
-      if( $("#"+casas_nv1[i]).hasClass("livre") ) {
-        
+  /* essa função é recursiva e inicia no movimento da onça.
+  No fim da função exite um loop para todas as jogadas do cachorro.
+  Se no fim do loop a jogada atual está com risco menor q o global ela atualiza a melhor jogada
+  */
+  function minValue( tabuleiro, jogada, risco, passo ) {
+    $("#computer").html( tabuleiro );
+    console.log("@@@@@@@@@@@@@@@@@@@@");
+    console.log("@ INICIO REPETICAO");
+    console.log("@ jogada: "+jogada.toString()+" | global: "+jogada_global);
+    console.log("@ risco: "+risco+" | global: "+risco_global);
+    console.log("@ passo: "+passo);
+    console.log("@@@@@@@@@@@@@@@@@@@@");
+
+    // verificando jogadas possiveis independente do estado do tabuleiro e colocando no array casas
+    if( movimentos[ $("#computer .onca").attr("id") ].length == 0 ) {
+      return;
+    }
+    var casas = movimentos[ $("#computer .onca").attr("id") ].toString();
+    movimentos_onca[ $("#computer .onca").attr("id") ].forEach(function(item) {
+      casas = casas+","+item;
+    });
+    casas = casas.split(",");
+
+    // loop em jogadas validas
+    for(i=0; i < casas.length; i++) {
+      if( $("#computer #"+casas[i].split(":")[0]).hasClass("livre") ) {
+        if( casas[i].indexOf(":") != -1 ) { // jogada comendo
+          var casa_onca = casas[i].split(":")[0];
+          var casa_cachorro = casas[i].split(":")[1];
+          console.log("~~~~~~~~~~~~~~~~~~~~");
+          console.log("~  jogada comendo ");
+          console.log(" casa onca vai jogar- "+casa_onca+" | casa dog vai ser comido- "+casa_cachorro);
+          console.log("~~~~~~~~~~~~~~~~~~~~");
+
+          mudarCasa(casa_onca, "onca", 0);
+
+          console.log("------------------------------ comeu ------------------------------");
+
+        } else { // jogada sem comer
+          var casa_onca = casas[i];
+          console.log("~~~~~~~~~~~~~~~~~~~~");
+          console.log("~ jogada sem comer");
+          console.log("~ casa onca vai jogar- "+casa_onca);
+          console.log("~~~~~~~~~~~~~~~~~~~~");
+
+          mudarCasa(casa_onca, "onca", 0);
+
+          if( passo == profundidade ) {
+            dog = 0;
+            risco = calculaRisco(risco, dog, jogada);
+
+            console.log("retornou loop");
+            return;
+          }
+
+          if(jogada == "" ) jogada = casa_onca;
+          tabuleiro = $("#computer").html();
+
+          $("#computer .cachorro").each(function( index ) {
+            var posicao_atual_cachorro = $(this).attr('id');
+            var jogada_cachorro = movimentos[ posicao_atual_cachorro ];
+
+            console.log(" - - - - - cachorro-"+posicao_atual_cachorro+" | "+(index+1)+"/"+(14-cachorros)+" - - - - - ");
+
+            jogada_cachorro.forEach(function(item) {
+              if( $("#computer #"+item).hasClass("livre") ){
+
+                mudarCasa(item, "cachorro", posicao_atual_cachorro);
+
+                console.log("jogada cachorro- "+item);
+                if(passo <= profundidade) {
+                  var tabuleiro_cachorro = $("#computer").html();
+                //  minValue( tabuleiro_cachorro, jogada, risco, passo+1 );
+                } else {
+                  return;
+                }
+                // reseta tabuleiro pro da jogada
+                $("#computer").html( tabuleiro );
+              }
+            });
+
+          });
+        }
       }
     }
   }
+
+  function turnoOnca() {
+    // alert("turno onca");
+    console.clear();
+    console.log("----------------------------------------------------------");
+    console.log("---------------- INICIO DA JOGADA DA ONÇA ----------------");
+    console.log("----------------------------------------------------------");
+
+    var tabuleiro_inicial = $("#tab").html();
+    var jogada_inicial = [];
+    var risco_inicial = 0;
+    var passo=0;
+
+    risco_global = 1000000;
+    jogada_global = "";
+    minValue( tabuleiro_inicial, jogada_inicial, risco_inicial, passo );
+
+  }
+  function calculaRisco(risco, dog, jogada) {
+    var redor_onca = movimentos[ $("#computer .onca").attr("id") ];
+    var casa_livre = 0;
+    redor_onca.forEach(function(item) {
+      if( $("#computer #"+item).hasClass("livre") ){
+        casa_livre++;
+      }
+    });
+    risco = risco + 10 - casa_livre + 1000 * (5-dog);
+    console.log("risco atual- "+risco);
+    if( risco_global > risco ) {
+      jogada_global = jogada;
+      risco_global = risco;
+    }
+    return risco;
+  }
+  function mudarCasa(id, animal, id_antigo) {
+    if(animal == "onca") {
+      // tira onça da casa
+      $("#computer .onca").html("");
+      $("#computer .onca").addClass("livre");
+      $("#computer .onca").removeClass("onca");
+      // move onça para local da jogada
+      $("#computer #"+id).html('<img src="images/onca.png">');
+      $("#computer #"+id).addClass("onca");
+      $("#computer #"+id).removeClass("livre");
+    } else {
+      // tira cachorro da casa
+      $("#computer #"+id_antigo).html("");
+      $("#computer #"+id_antigo).addClass("livre");
+      $("#computer #"+id_antigo).removeClass("cachorro");
+      // move cachorro para local da jogada
+      $("#computer #"+id).html('<img src="images/cachorro.png">');
+      $("#computer #"+id).removeClass("livre");
+      $("#computer #"+id).addClass("cachorro");
+    }
+  }
+  $(function() {
+    setTimeout( function(){ turnoOnca(); }, 2000 );
+    console.log("START");
+  });
   </script>
 </body>
 </html>
