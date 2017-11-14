@@ -149,7 +149,7 @@
   /*##########################################################################
   #                                  JOGADOR
   ##########################################################################*/
-  $("span").click(function() {
+  $("#tab span").click(function() {
     if( !$(this).hasClass("jogavel") && turno == "cachorro") {
       casa_atual = $(this).attr('id');
 
@@ -171,8 +171,8 @@
         marcarCasas();
         $(this).addClass("selecionado");
       } else {
-        $("span").removeClass("selecionado");
-        $("span").removeClass("jogavel");
+        $("#tab span").removeClass("selecionado");
+        $("#tab span").removeClass("jogavel");
       }
     } else if( $(this).hasClass("jogavel") && turno == "cachorro") {
       // configurações padrão da casa clicada ( ocupar a casa / colocar a imagem / remover imagem e classes da ultima )
@@ -183,11 +183,11 @@
       $(this).html('<img src="images/cachorro.png">');
 
       // removendo classes e imagens da ultima jogada
-      $("#"+casa_atual).html("");
-      $("#"+casa_atual).addClass("livre");
-      $("#"+casa_atual).removeClass("cachorro");
-      $("span").removeClass("jogavel");
-      $("span").removeClass("selecionado");
+      $("#tab #"+casa_atual).html("");
+      $("#tab #"+casa_atual).addClass("livre");
+      $("#tab #"+casa_atual).removeClass("cachorro");
+      $("#tab span").removeClass("jogavel");
+      $("#tab span").removeClass("selecionado");
 
       $("#turno").html("Turno: ONÇA");
       turno = "onca";
@@ -201,8 +201,8 @@
   });
   function marcarCasas() {
     // limpa as casas da ultima jogada
-    $("span").removeClass("selecionado");
-    $("span").removeClass("jogavel");
+    $("#tab span").removeClass("selecionado");
+    $("#tab span").removeClass("jogavel");
 
     // busca dados do objeto de movimentos
     var casas_possiveis = movimentos[casa_atual];
@@ -213,8 +213,8 @@
 
     // adiciona classe nos lugares disponiveis
     for(i=0; i < casas_possiveis.length; i++) {
-      if( $("#"+casas_possiveis[i]).hasClass("livre") ) {
-        $("#"+casas_possiveis[i]).addClass("jogavel");
+      if( $("#tab #"+casas_possiveis[i]).hasClass("livre") ) {
+        $("#tab #"+casas_possiveis[i]).addClass("jogavel");
       }
     }
   }
@@ -260,28 +260,97 @@
   - O risco é cumulativo nos passos;
   - Não será avaliado o risco q a jogada do cahorro causa
   */
-  var melhor_movimento = [];
-  var profundidade = 1;
   var jogada_global = "";
   var risco_global = "";
+  var comidos_global = 0;
 
   /* essa função é recursiva e inicia no movimento da onça.
   No fim da função exite um loop para todas as jogadas do cachorro.
   Se no fim do loop a jogada atual está com risco menor q o global ela atualiza a melhor jogada
   */
-  function minValue( tabuleiro, jogada, risco, passo ) {
-    $("#computer").html( tabuleiro );
-    console.log("@@@@@@@@@@@@@@@@@@@@");
-    console.log("@ INICIO REPETICAO");
-    console.log("@ jogada: "+jogada.toString()+" | global: "+jogada_global);
-    console.log("@ risco: "+risco+" | global: "+risco_global);
-    console.log("@ passo: "+passo);
-    console.log("@@@@@@@@@@@@@@@@@@@@");
-
+  function profundidade_1(risco, comidos, jogada) {
     // verificando jogadas possiveis independente do estado do tabuleiro e colocando no array casas
-    if( movimentos[ $("#computer .onca").attr("id") ].length == 0 ) {
-      return;
-    }
+    var casas = movimentos[ $("#computer .onca").attr("id") ].toString();
+    movimentos_onca[ $("#computer .onca").attr("id") ].forEach(function(item) {
+      casas = casas+","+item;
+    });
+    casas = casas.split(",");
+
+    // loop em jogadas validas
+    for(i=0; i < casas.length; i++) {
+      if( $("#computer #"+casas[i].split(":")[0]).hasClass("livre") ) {
+        if( casas[i].indexOf(":") != -1 ) { // jogada comendo
+          var casa_onca = casas[i].split(":")[0];
+          var casa_cachorro = casas[i].split(":")[1];
+          console.log("~~~~~~~~~~~~~~~~~~~~");
+          console.log("~ LOOP - jogada comendo ");
+          console.log(" casa onca vai jogar- "+casa_onca+" | casa dog vai ser comido- "+casa_cachorro);
+          console.log("~~~~~~~~~~~~~~~~~~~~");
+
+          // função recursiva q faz todas opções de comidos, retorna o valor de risco do ultimo passo
+
+          profundidade_onca(casa_onca, casa_cachorro);
+
+          console.log("------------------------------ comeu ------------------------------");
+
+        } else { // jogada sem comer
+          var casa_onca = casas[i];
+          console.log("~~~~~~~~~~~~~~~~~~~~");
+          console.log("~ LOOP - jogada sem comer");
+          console.log("~ casa onca vai jogar- "+casa_onca);
+          console.log("~~~~~~~~~~~~~~~~~~~~");
+
+          mudarCasa(casa_onca, "onca", 0);
+
+          var tabuleiro = $("#computer").html();
+
+          $("#computer .cachorro").each(function( index ) {
+            var posicao_atual_cachorro = $(this).attr('id');
+            var jogada_cachorro = movimentos[ posicao_atual_cachorro ];
+
+            console.log(" - - - - - cachorro-"+posicao_atual_cachorro+" | "+(index+1)+"/"+(14-cachorros)+" - - - - - ");
+
+            jogada_cachorro.forEach(function(item) {
+              if( $("#computer #"+item).hasClass("livre") ){
+
+                mudarCasa(item, "cachorro", posicao_atual_cachorro);
+
+                console.log("cachorro: "posicao_atual_cachorro+" => "+item);
+
+                risco = calculaRisco(risco, 0, jogada);
+
+                if( risco_global > risco && comidos_global <= comidos ) {
+                  jogada_global = jogada;
+                  risco_global = risco;
+                  comidos_global = comidos;
+                } else if (risco_global == risco && getRandomInt(0,1) ) {
+                  jogada_global = jogada;
+                  comidos_global = comidos;
+                }
+
+                $("#computer").html( tabuleiro );
+              }
+            });
+
+          });
+        }
+      }
+    } // for end
+  }
+
+  function turnoOnca() {
+    // alert("turno onca");
+    console.clear();
+    console.log("----------------------------------------------------------");
+    console.log("---------------- INICIO DA JOGADA DA ONÇA ----------------");
+    console.log("----------------------------------------------------------");
+
+    risco_global = 1000000;
+    jogada_global = "";
+    comidos_global = 0;
+
+    $("#computer").html( $("#tab").html() );
+    // verificando jogadas possiveis independente do estado do tabuleiro e colocando no array casas
     var casas = movimentos[ $("#computer .onca").attr("id") ].toString();
     movimentos_onca[ $("#computer .onca").attr("id") ].forEach(function(item) {
       casas = casas+","+item;
@@ -299,7 +368,9 @@
           console.log(" casa onca vai jogar- "+casa_onca+" | casa dog vai ser comido- "+casa_cachorro);
           console.log("~~~~~~~~~~~~~~~~~~~~");
 
-          mudarCasa(casa_onca, "onca", 0);
+          // função recursiva q faz todas opções de comidos, retorna o valor de risco do ultimo passo
+
+          profundidade_onca(casa_onca, casa_cachorro);
 
           console.log("------------------------------ comeu ------------------------------");
 
@@ -312,16 +383,8 @@
 
           mudarCasa(casa_onca, "onca", 0);
 
-          if( passo == profundidade ) {
-            dog = 0;
-            risco = calculaRisco(risco, dog, jogada);
-
-            console.log("retornou loop");
-            return;
-          }
-
-          if(jogada == "" ) jogada = casa_onca;
-          tabuleiro = $("#computer").html();
+          jogada = casa_onca;
+          var tabuleiro = $("#computer").html();
 
           $("#computer .cachorro").each(function( index ) {
             var posicao_atual_cachorro = $(this).attr('id');
@@ -334,42 +397,24 @@
 
                 mudarCasa(item, "cachorro", posicao_atual_cachorro);
 
-                console.log("jogada cachorro- "+item);
-                if(passo <= profundidade) {
-                  var tabuleiro_cachorro = $("#computer").html();
-                //  minValue( tabuleiro_cachorro, jogada, risco, passo+1 );
-                } else {
-                  return;
-                }
-                // reseta tabuleiro pro da jogada
+                console.log("cachorro: "posicao_atual_cachorro+" => "+item);
+
+                risco = calculaRisco(0, 0, jogada);
+
+                profundidade_1(risco, 0, jogada);
+
                 $("#computer").html( tabuleiro );
               }
             });
 
           });
+
         }
       }
-    }
-  }
-
-  function turnoOnca() {
-    // alert("turno onca");
-    console.clear();
-    console.log("----------------------------------------------------------");
-    console.log("---------------- INICIO DA JOGADA DA ONÇA ----------------");
-    console.log("----------------------------------------------------------");
-
-    var tabuleiro_inicial = $("#tab").html();
-    var jogada_inicial = [];
-    var risco_inicial = 0;
-    var passo=0;
-
-    risco_global = 1000000;
-    jogada_global = "";
-    minValue( tabuleiro_inicial, jogada_inicial, risco_inicial, passo );
+    } // for end
 
   }
-  function calculaRisco(risco, dog, jogada) {
+  function calculaRisco(risco, comidos, jogada) {
     var redor_onca = movimentos[ $("#computer .onca").attr("id") ];
     var casa_livre = 0;
     redor_onca.forEach(function(item) {
@@ -377,12 +422,9 @@
         casa_livre++;
       }
     });
-    risco = risco + 10 - casa_livre + 1000 * (5-dog);
-    console.log("risco atual- "+risco);
-    if( risco_global > risco ) {
-      jogada_global = jogada;
-      risco_global = risco;
-    }
+    if(casa_livre == 1) return risco=10000000;
+    risco = risco + 10 - casa_livre + 1000 * (5-comidos);
+    console.log("risco atual-> "+risco);
     return risco;
   }
   function mudarCasa(id, animal, id_antigo) {
@@ -405,6 +447,9 @@
       $("#computer #"+id).removeClass("livre");
       $("#computer #"+id).addClass("cachorro");
     }
+  }
+  function getRandomInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
   }
   $(function() {
     setTimeout( function(){ turnoOnca(); }, 2000 );
