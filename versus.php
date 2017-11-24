@@ -209,6 +209,8 @@
       } else if(turno == "onca") {
         // caso tenha comido uma peça ( adiciona no contador / limpa classe e imagem do cachorro / checa vencedor )
         if( $(this).hasClass("comida") ) {
+          $("#audio-onca")[0].load();
+          $("#audio-onca")[0].play();
           cachorros++;
           $("#placar").append('<img src="images/cachorro.png">')
           $("#"+$(this).attr("data-comida") ).html("");
@@ -219,8 +221,6 @@
           casa_atual = $(this).attr('id');
           marcarCasasOnca();
           $("#"+casa_atual).addClass("ataque");
-          $("#audio-onca")[0].load();
-          $("#audio-onca")[0].play();
         }
 
         casa_atual = $(this).attr('id');
