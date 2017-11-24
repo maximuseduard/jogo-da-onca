@@ -11,6 +11,14 @@
   <link rel="stylesheet" type="text/css" href="css/styles.css">
 </head>
 <body>
+  <audio id="audio-onca">
+    <source src="sounds/onca.mp3" type="audio/mpeg" />
+    <!-- <source src="sounds/onca-bebe.mp3" type="audio/mpeg" /> -->
+  </audio>
+  <audio id="audio-cachorro">
+    <source src="sounds/cachorro.mp3" type="audio/mpeg" />
+  </audio>
+
   <div id="tab">
     <span id="x11" class="cachorro"><img src="images/cachorro.png"></span>
     <span id="x12" class="cachorro"><img src="images/cachorro.png"></span>
@@ -211,6 +219,8 @@
           casa_atual = $(this).attr('id');
           marcarCasasOnca();
           $("#"+casa_atual).addClass("ataque");
+          $("#audio-onca")[0].load();
+          $("#audio-onca")[0].play();
         }
 
         casa_atual = $(this).attr('id');
@@ -240,6 +250,8 @@
         }
       }
     } else if( $("span").hasClass("ataque") ) {
+      $("#audio-onca")[0].load();
+      $("#audio-onca")[0].play();
       casa_atual = $("span.ataque").attr('id');
       $("span.ataque").addClass("selecionado");
       // Se existir opções o usuário tem q cancelar a jogada manualmente, ou comer mais cachorros. Se não passa o turno automaticamente
@@ -326,8 +338,13 @@
     $("span").removeClass("comida");
     $("span").removeClass("ataque");
 
-    if(animal == "onca") setTimeout(function(){ alert("A ONÇA ganhou!\nReinicie a página para jogar novamente"); }, 0);
-    else setTimeout(function(){ alert("OS CACHORROS ganharam!\nReinicie a página para jogar novamente"); }, 0);
+    if(animal == "onca") setTimeout(function(){
+      alert("A ONÇA ganhou!\nReinicie a página para jogar novamente");
+    }, 0);
+    else setTimeout(function(){
+      $("#audio-cachorro")[0].play();
+      alert("OS CACHORROS ganharam!\nReinicie a página para jogar novamente");
+    }, 0);
   }
   function testeVencedor() {
     // busca dados do objeto de movimentos

@@ -11,6 +11,11 @@
   <link rel="stylesheet" type="text/css" href="css/index.css">
 </head>
 <body>
+  <audio autoplay loop>
+    <source src="sounds/ambient-rain.mp3" type="audio/mpeg" />
+    <!-- <source src="sounds/ambient-forest.mp3" type="audio/mpeg" /> -->
+    <!-- <source src="sounds/ambient-jungle.mp3" type="audio/mpeg" /> -->
+  </audio>
 
   <span class="jogo">J<span class="cor-onca">O</span>G<span class="cor-onca">O</span> D<span class="cor-onca">A</span> O<span class="cor-onca">N</span>Ç<span class="cor-onca">A</span></span>
 
@@ -18,6 +23,5 @@
 
   <button type="button" class="versus" name="button" onclick="location.href='versus.php';">1 vs 1</button>
   <button type="button" class="computer" name="button" onclick="location.href='computer.php';">1 vs CPU</button>
-
 </body>
 </html>
