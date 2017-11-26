@@ -6,11 +6,15 @@
   <meta name="description" content="Trabalho sobre o jogo da onça">
   <meta name="author" content="André, Eduardo, Ronan">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- <meta http-equiv="refresh" content="30"> --> <!-- Refresh document every 30 seconds -->
   <title>JOGO DA ONÇA</title>
   <link rel="stylesheet" type="text/css" href="css/styles.css">
 </head>
 <body>
+  <audio id="audio-ambiente" autoplay loop>
+    <source src="sounds/ambient-rain.mp3" type="audio/mpeg" />
+    <!-- <source src="sounds/ambient-forest.mp3" type="audio/mpeg" /> -->
+    <!-- <source src="sounds/ambient-jungle.mp3" type="audio/mpeg" /> -->
+  </audio>
   <audio id="audio-onca">
     <source src="sounds/onca.mp3" type="audio/mpeg" />
     <!-- <source src="sounds/onca-bebe.mp3" type="audio/mpeg" /> -->
@@ -78,6 +82,8 @@
   <script src="js/jquery-3.2.1.min.js" charset="utf-8"></script>
 
   <script type="text/javascript">
+  $("#audio-ambiente")[0].volume = 0.2;
+
   var i=0;
   var turno = "onca";
   var cachorros = 0;
@@ -157,6 +163,7 @@
       casa_atual = $(this).attr('id');
 
       console.clear();
+      console.log('$("#audio-ambiente")[0].pause();');
       console.log("----------------------------------------------------------");
       console.log("-------------------- INICIO DA JOGADA --------------------");
       console.log("----------------------------------------------------------");
