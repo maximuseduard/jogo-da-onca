@@ -391,6 +391,7 @@
 
     // realiza a jogada
     if( jogada.indexOf(":") != -1 ) {
+      $("#audio-onca")[0].play();
       casa_onca = jogada.split(":")[0];
       casa_cachorro = jogada.split(":")[1];
       // tira onça da casa
