@@ -344,7 +344,7 @@
             jogada_cachorro.forEach(function(item) {
               if( $("#computer #"+item).hasClass("livre") ){
                 mudarCasa(item, "cachorro", posicao_atual_cachorro);
-                console.log("cachorro => "posicao_atual_cachorro+" => "+item);
+                console.log("cachorro => "+posicao_atual_cachorro+" => "+item);
 
                 risco = calculaRisco(0, comidos_loop);
                 profundidade_recursiva(risco, comidos_loop, jogada, 1);
@@ -373,7 +373,7 @@
             jogada_cachorro.forEach(function(item) {
               if( $("#computer #"+item).hasClass("livre") ){
                 mudarCasa(item, "cachorro", posicao_atual_cachorro);
-                console.log("cachorro: "posicao_atual_cachorro+" => "+item);
+                console.log("cachorro: "+posicao_atual_cachorro+" => "+item);
 
                 risco = calculaRisco(0, 0);
 
@@ -455,7 +455,7 @@
             jogada_cachorro.forEach(function(item) {
               if( $("#computer #"+item).hasClass("livre") ){
                 mudarCasa(item, "cachorro", posicao_atual_cachorro);
-                console.log("cachorro => "posicao_atual_cachorro+" => "+item);
+                console.log("cachorro => "+posicao_atual_cachorro+" => "+item);
 
                 risco_jogada = calculaRisco(risco, comidos_loop);
                 if( profundidade_jogo == profundidade ) {
@@ -494,7 +494,7 @@
             jogada_cachorro.forEach(function(item) {
               if( $("#computer #"+item).hasClass("livre") ){
                 mudarCasa(item, "cachorro", posicao_atual_cachorro);
-                console.log("cachorro: "posicao_atual_cachorro+" => "+item);
+                console.log("cachorro: "+posicao_atual_cachorro+" => "+item);
 
                 // se chegou no numero de jogadas a frente desejado
                 if( profundidade_jogo == profundidade ) {
