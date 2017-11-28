@@ -13,7 +13,7 @@ body {
 #tab, #computer{
   margin-left: 100px;
   margin-top: 100px;
-  background-image: url("http://www.quizetec.hol.es/jogo_onca/Arquivos/tabuleiro.png");
+  background-image: url("../images/tabuleiro.png");
   width:600px;
   height:700px;
   background-repeat: no-repeat;
