@@ -206,7 +206,7 @@
       $("#turno").html("Turno: ONÇA");
       turno = "onca";
       testeVencedor();
-      turnoOnca();
+      setTimeout( function(){ turnoOnca(); }, 1000 );
       console.log("-----------------------------------------------------------");
       console.log("------------------ FIM DA JOGADA CACHORRO -----------------");
       console.log("-----------------------------------------------------------");
@@ -296,6 +296,7 @@
   function turnoOnca() {
     console.clear();
     console.group("Jogada da Onça");
+    console.time("Funcao");
     console.log('$("#audio-ambiente")[0].pause();');
     console.log("----------------------------------------------------------");
     console.log("---------------- INICIO DA JOGADA DA ONÇA ----------------");
@@ -332,7 +333,7 @@
 
             console.groupCollapsed("Onca_Comendo Raiz - "+casa_onca+"|"+casa_cachorro);
             // função recursiva q faz todas opções de comidos, retorna o valor de risco do ultimo passo
-            risco_loop = 10000000;
+            risco_loop = 5000;
             comidos_loop = 0;
             profundidade_onca(casa_onca, casa_cachorro, 0);
 
@@ -345,7 +346,7 @@
                 if( $("#computer #"+item).hasClass("livre") ){
                   mudarCasa(item, "cachorro", posicao_atual_cachorro);
 
-                  risco = calculaRisco(0, comidos_loop);
+                  risco = calculaRisco(risco_loop, comidos_loop);
                   console.group("%c cachorro: "+posicao_atual_cachorro+" => "+item, 'background: #b3b3b3; color: #ff0000');
                   profundidade_recursiva(risco, comidos_loop, jogada, 1);
                   console.groupEnd();
@@ -371,7 +372,7 @@
             jogada_cachorro.forEach(function(item) {
               if( $("#computer #"+item).hasClass("livre") ){
                 mudarCasa(item, "cachorro", posicao_atual_cachorro);
-                risco = calculaRisco(0, 0);
+                risco = calculaRisco(5000, 0);
 
                 console.group("%c cachorro: "+posicao_atual_cachorro+" => "+item, 'background: #b3b3b3; color: #ff0000');
                 profundidade_recursiva(risco, 0, jogada, 1);
@@ -409,6 +410,10 @@
       $("#tab #"+casa_cachorro).html("");
       $("#tab #"+casa_cachorro).addClass("livre");
       $("#tab #"+casa_cachorro).removeClass("cachorro");
+
+      cachorros++;
+      $("#placar").append('<img src="images/cachorro.png">')
+      if(cachorros == 5) vencedor("onca");
     } else {
       // tira onça da casa
       $("#tab .onca").html("");
@@ -420,7 +425,9 @@
       $("#tab #"+jogada_global).removeClass("livre");
     }
     console.groupEnd();
+    $("#turno").html("Turno: CACHORRO");
     turno = "cachorro";
+    console.timeEnd("Funcao");
     console.groupEnd();
   }
   function profundidade_recursiva(risco, comidos, jogada, profundidade) {
@@ -602,7 +609,7 @@
         casa_livre++;
       }
     });
-    if(casa_livre <= 2) return risco=10000000;
+    if(casa_livre <= 2 && comidos == 0) return risco=10000000;
     risco = risco + 10 - casa_livre + 1000 * (5-comidos_global-comidos);
     return risco;
   }
