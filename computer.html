@@ -335,6 +335,7 @@
             // função recursiva q faz todas opções de comidos, retorna o valor de risco do ultimo passo
             risco_loop = 5000;
             comidos_loop = 0;
+            jogada_loop = jogada;
             profundidade_onca(casa_onca, casa_cachorro, 0);
 
             tabuleiro_jogada = $("#computer").html();
@@ -454,6 +455,7 @@
             // função recursiva q faz todas opções de comidos, retorna o valor de risco do ultimo passo
             risco_loop = 10000000;
             comidos_loop = 0;
+            jogada_loop = jogada;
             profundidade_onca(casa_onca, casa_cachorro, comidos);
 
             tabuleiro_jogada = $("#computer").html();
