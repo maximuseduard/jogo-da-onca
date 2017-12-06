@@ -23,7 +23,7 @@
     <source src="sounds/cachorro.mp3" type="audio/mpeg" />
   </audio>
   <div id="computer" style="display:none">
-  <!-- <div id="computer"> -->
+    <!-- <div id="computer"> -->
 
   </div>
 
@@ -287,6 +287,8 @@
   var risco_loop = 10000000;
   var jogada_loop = "";
 
+  var total_jogadas = 0;
+
   var profundidade_jogo = 1; // numero de jogadas a frente
 
   /* essa função é recursiva e inicia no movimento da onça.
@@ -308,6 +310,8 @@
 
     comidos_loop = 0;
     risco_loop = 10000000;
+
+    total_jogadas = 0;
 
     var jogada = "";
     var tabuleiro_jogada = "";
@@ -391,6 +395,7 @@
     } // for end
 
     console.group("Jogada realizada");
+    console.log("qtd de jogadas= "+total_jogadas);
     console.log("risco= "+risco_global);
     console.log("jogada= "+jogada_global);
     console.log("comido= "+comidos_global);
@@ -413,8 +418,61 @@
       $("#tab #"+casa_cachorro).removeClass("cachorro");
 
       cachorros++;
-      $("#placar").append('<img src="images/cachorro.png">')
-      if(cachorros == 5) vencedor("onca");
+      $("#placar").append('<img src="images/cachorro.png">');
+      if(cachorros == 5) {
+        vencedor("onca");
+        return;
+      }
+
+      var casa_livre = 0;
+      var redor_onca = "";
+      var casas = "";
+
+      var contador_final = 0;
+      while(contador_final < (5-cachorros)) {
+        casas = movimentos_onca[ $("#tab #"+casa_onca).attr("id") ];
+        for(var i=0; i < casas.length; i++) {
+          if( $("#tab #"+casas[i].split(":")[0]).hasClass("livre") ) {
+            if( $("#tab #"+casas[i].split(":")[1]).hasClass("cachorro") ) {
+
+              casa_onca = casas[i].split(":")[0];
+              casa_cachorro = casas[i].split(":")[1];
+
+              redor_onca = movimentos[ $("#tab #"+casa_cachorro).attr("id") ];
+              casa_livre = 0;
+              redor_onca.forEach(function(item) {
+                if( $("#tab #"+item).hasClass("livre") ){
+                  casa_livre++;
+                }
+              });
+              if(casa_livre >= 1) {
+                // tira onça da casa
+                $("#tab .onca").html("");
+                $("#tab .onca").addClass("livre");
+                $("#tab .onca").removeClass("onca");
+                // move onça para local da jogada
+                $("#tab #"+casa_onca).html('<img src="images/onca.png">');
+                $("#tab #"+casa_onca).addClass("onca");
+                $("#tab #"+casa_onca).removeClass("livre");
+                // come cachorro
+                $("#tab #"+casa_cachorro).html("");
+                $("#tab #"+casa_cachorro).addClass("livre");
+                $("#tab #"+casa_cachorro).removeClass("cachorro");
+
+                cachorros++;
+                $("#placar").append('<img src="images/cachorro.png">');
+                if(cachorros == 5) {
+                  vencedor("onca");
+                  return;
+                }
+                break;
+              }
+
+            }
+          }
+        }
+        contador_final++;
+      } // end while
     } else {
       // tira onça da casa
       $("#tab .onca").html("");
@@ -470,6 +528,7 @@
 
                   risco_jogada = calculaRisco(risco, comidos_loop);
                   if( profundidade_jogo == profundidade ) {
+                    total_jogadas++;
 
                     console.group("Resultado");
                     console.log("-- jogada --");
@@ -522,6 +581,7 @@
 
                 risco_jogada = calculaRisco(risco, comidos);
                 if( profundidade_jogo == profundidade ) {
+                  total_jogadas++;
 
                   console.group("Resultado");
                   console.log("-- jogada --");
